@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html data-ng-app="Application">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Шашки</title>
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/build/app.css">
+</head>
+<body>
+	<div class="container" data-ng-controller="GameController">
+		<div class="sidebar">
+			<div class="scores">{{players[0].scores}} : {{players[1].scores}}</div>
+			<div class="player-info" data-ng-repeat="player in players" data-ng-class="{active: current_player == player}">
+				<div class="name" data-ng-hide="game_state == 'stopped'">{{player.name}}</div>
+				<div class="input" data-ng-hide="game_state == 'running'">
+					<input type="text" data-ng-model="player.name">
+				</div>
+				<div class="time">{{player.timer.time|date:'mm:ss'}}</div>
+				<div class="captured">
+					<div data-ng-class="[figure.constructor.name,figure.color]" data-ng-repeat="figure in player.captured_figures"></div>
+				</div>
+			</div>
+			<div class="restart" data-ng-click="stop()" data-ng-class="{active: game_state == 'running'}">Начать заново!</div>
+			<div class="surrender" data-ng-click="surrender()" data-ng-class="{active: game_state == 'running' && !message}">Сдаться</div>
+		</div>
+		<div class="game-field">
+			<div class="message" data-ng-click="start()" data-ng-hide="game_state == 'running'">Нажмите для начала игры</div>
+			<div class="message" data-ng-click="stop()" data-ng-hide="!message">{{message}}</div>
+			<div class="row" data-ng-repeat="row in game_field.cells">
+				<div class="cell" data-ng-repeat="cell in row" data-ng-class="{
+					black: cell.color == 'black', 
+					placed: cell.figure && game_state == 'running', 
+					'figure-white': cell.figure.color == 'white', 
+					'figure-black': cell.figure.color == 'black',
+					selected: cell == selected_cell,
+					Man: cell.figure.constructor.name == 'Man',
+					King: cell.figure.constructor.name == 'King'
+				}" data-ng-click="cell_click(cell)"></div>
+			</div>
+		</div>
+	</div>
+  
+	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+	<script src="https://code.angularjs.org/1.4.9/angular.min.js"></script>
+	<script src="js/build/app.js"></script>
+</body>
+</html>

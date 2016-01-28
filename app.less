@@ -1,0 +1,172 @@
+html 
+{
+	height: 100%
+}
+
+@game-field-size: 400px;
+@cell-size: unit(1 / 8 * 100, %);
+@figure-white-color: #f5f5f5;
+@figure-black-color: #404040;
+
+.border()
+{
+	border: 1px solid #222222;
+}
+
+body 
+{
+	height: 100%; 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	.container 
+	{
+		.border;
+		padding: 10px; 
+		display: flex;
+		align-items: stretch;
+		.sidebar 
+		{
+			width: 150px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			.scores, .restart, .surrender
+			{
+				.border;
+				padding: 5px;
+				text-align: center;
+			}
+			.restart.active, .surrender.active
+			{
+				cursor: pointer;
+			}
+			.player-info
+			{
+				.border;
+				padding: 5px;
+				text-align: center;
+				&.active
+				{
+					border-color: coral;
+				}
+				.input input
+				{
+					width: 90%;
+					text-align: center;
+					display: block;
+					margin: 0 auto;
+				}
+				.captured
+				{
+					.border;
+					min-height: 65px;
+					margin-top: 18px;
+					&::before
+					{
+						content: "шашки противника:";
+						display: block;
+						font-size: 10px;
+					}
+					&>div 
+					{
+						display: inline-block; 
+						width: 20px; 
+						height: 20px; 
+						background-position: center center;
+						background-repeat: no-repeat;
+						background-size: 100% auto
+					}
+					.black 
+					{
+						background-image: url("img/bss.png")
+					}
+					.white
+					{
+						background-image: url("img/wss.png")
+					}
+				}
+			}
+		}
+		.game-field 
+		{
+			width: @game-field-size;
+			height: @game-field-size;
+			margin-left:10px;
+			display: flex;
+			flex-direction: column;
+			align-content: stretch;
+			position: relative;
+			.border;
+			.message 
+			{
+				position: absolute;
+				padding: 10px;
+				.border;
+				background-color: white;
+				top: 180px;
+				left: 92px;
+				cursor: pointer;
+			}
+			.row 
+			{
+				height: @cell-size; 
+				justify-content: stretch;
+				display: flex;
+				
+				.cell 
+				{
+					height: 100%;
+					width: @cell-size;
+					&.black 
+					{
+						background-color: gray;
+					}
+					&.placed
+					{
+						&::after 
+						{
+							content: "";
+							display: block;
+							height: 100%;
+							border-radius: 300px;
+							background-position: center center;
+							background-repeat: no-repeat;
+							background-size: 100% auto
+						}
+					}
+					&.selected 
+					{
+						&::after
+						{
+							box-shadow: 0 0 4px 0 coral;
+						}
+					}
+					&.figure-white
+					{
+						&::after
+						{
+							background-image: url("img/wss.png")
+						}
+						&.King::after
+						{
+							background-image: url("img/wd.png")
+						}
+					}
+					&.figure-black
+					{
+						&::after
+						{
+							background-image: url("img/bss.png")
+						}
+						&.King::after
+						{
+							background-image: url("img/bd.png")
+						}
+					}
+				}
+			}
+		}
+		
+	}
+}
